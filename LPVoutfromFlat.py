@@ -42,16 +42,10 @@ def plot():
         x = []
         y = []
         for i in range(-89,90):
-            try:
-                out = LPV_outfrom_flat(i,LPV=LPV)
-            except:
-                out = []
+            out = LPV_outfrom_flat(i,LPV=LPV)
             for j in out:
                 x.append(i)
                 y.append(j)
-            # ymulti.append(out[1])
-        # plt.plot(x,y,label = "LP=%d°"%LP)
-        # plt.plot(x,ymulti,label = "LP=%d°(multipath)"%LP)
         plt.scatter(x,y,label="LPV=%d°"%LPV,s = 5)
     plt.title("プリズムシートLPV平面から出射", fontname="MS Gothic")
     plt.xlabel("プリズムシート入射角 [deg]", fontname="MS Gothic")
@@ -71,4 +65,4 @@ def plot():
     plt.plot(x,y, label = "ideal")
     plt.legend()
     plt.show()
-plot()
+# plot()

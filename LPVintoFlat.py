@@ -34,17 +34,11 @@ def plot():
     for LPV in LPVs:
         x = []
         y = []
-        # ymulti = []
         for i in range(-89,90):
-            try:
-                out = LPV_into_flat(i,LPV=LPV)
-            except:
-                out = []
+            out = LPV_into_flat(i,LPV=LPV)
             for j in out:
                 x.append(i)
                 y.append(j)
-        # plt.plot(x,y,label = "LP=%d°"%LP)
-        # plt.plot(x,ymulti,label = "LP=%d°(multipath)"%LP)
         plt.scatter(x,y,label="LPV=%d°"%LPV,s = 5)
     plt.title("プリズムシートLPV平面から入射", fontname="MS Gothic")
     plt.xlabel("プリズムシート入射角 [deg]", fontname="MS Gothic")
@@ -65,4 +59,4 @@ def plot():
     
     plt.legend()
     plt.show()
-plot()
+# plot()
