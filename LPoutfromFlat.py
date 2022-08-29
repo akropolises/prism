@@ -19,22 +19,22 @@ def LP_outfrom_flat(incidentAngle_degree,LP=40):
                 ret.append(degrees(out))
             except:
                 pass
-        if out1 < LP: # 壁
-            in2 = LP-out1
-            try:
-                out = asin(n*sin(in2))
-                ret.append(degrees(out))
-            except:
-                pass
-    if in0 > 0: # 壁
-        in1 = pi/2 - in0
-        out1 = asin(sin(in1)/n)
-        in2 = pi/2 - out1
-        try:
-            out = asin(n*sin(in2))
-            ret.append(degrees(out))
-        except:
-            pass
+        # if out1 < LP: # 壁
+        #     in2 = LP-out1
+        #     try:
+        #         out = asin(n*sin(in2))
+        #         ret.append(degrees(out))
+        #     except:
+        #         pass
+    # if in0 > 0: # 壁
+    #     in1 = pi/2 - in0
+    #     out1 = asin(sin(in1)/n)
+    #     in2 = pi/2 - out1
+    #     try:
+    #         out = asin(n*sin(in2))
+    #         ret.append(degrees(out))
+    #     except:
+    #         pass
     return ret
 
 def plot():

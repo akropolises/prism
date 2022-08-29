@@ -19,22 +19,22 @@ def LP_into_flat(incidentAngle_degree,LP=40):
             ret.append(degrees(out))
         except:
             pass
-    if out1 < 0: # 壁
-        in2 = pi/2 + out1 #out1<0に注意
-        try:
-            out2 = asin(n*sin(in2))
-            out = out2 - pi/2
-            ret.append(degrees(out))
-        except:
-            out1 = -out1
-            if out1 > -(pi/2 - LP): #左斜面
-                in2 = out1 - LP
-                try:
-                    out2 = asin(n*sin(in2))
-                    out = out2 + LP
-                    ret.append(degrees(out))
-                except:
-                    pass
+    # if out1 < 0: # 壁
+    #     in2 = pi/2 + out1 #out1<0に注意
+    #     try:
+    #         out2 = asin(n*sin(in2))
+    #         out = out2 - pi/2
+    #         ret.append(degrees(out))
+    #     except:
+    #         out1 = -out1
+    #         if out1 > -(pi/2 - LP): #左斜面
+    #             in2 = out1 - LP
+    #             try:
+    #                 out2 = asin(n*sin(in2))
+    #                 out = out2 + LP
+    #                 ret.append(degrees(out))
+    #             except:
+    #                 pass
     return ret
 
 def plot():
@@ -42,7 +42,6 @@ def plot():
     for LP in LPs:
         x = []
         y = []
-        # ymulti = []
         for i in range(-89,90):
             try:
                 out = LP_into_flat(i,LP=LP)
@@ -51,8 +50,6 @@ def plot():
             for j in out:
                 x.append(i)
                 y.append(j)
-        # plt.plot(x,y,label = "LP=%d°"%LP)
-        # plt.plot(x,ymulti,label = "LP=%d°(multipath)"%LP)
         plt.scatter(x,y,label="LP=%d°"%LP,s = 5)
     plt.title("プリズムシートLP平面から入射", fontname="MS Gothic")
     plt.xlabel("プリズムシート入射角 [deg]", fontname="MS Gothic")
@@ -61,4 +58,4 @@ def plot():
     plt.ylim(-90,90)
     plt.legend()
     plt.show()
-plot()
+# plot()
