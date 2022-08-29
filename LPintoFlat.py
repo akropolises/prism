@@ -6,50 +6,35 @@ n = 1.49 #PMMA
 
 def LP_into_flat(incidentAngle_degree,LP=40):
     assert(-90<incidentAngle_degree<90)
-    isMinus = incidentAngle_degree<0
-    in1 = radians(incidentAngle_degree)*((-1)**isMinus)
+    in1 = radians(incidentAngle_degree)
     LP = radians(LP)
     #1*sin(in1) = n*sin(out1)
     out1 = asin(sin(in1)/n)
     ret = []
-    if isMinus:
-        if pi/2 - out1 > LP:
-            try:
-                in2 = LP + out1
-                out2 = asin(n*sin(in2))
-                out = LP-out2 #正負が正しい
-                ret.append(degrees(out))
-            except:
-                pass
-        ret += kabe(out1,LP)
-    else:
-        ret.append(out1isPlus(out1,LP))
-    #n*sin(in2) = 1*sin(out2)
-    return ret
-
-def out1isPlus(out1, LP):
-    in2 = abs(LP-out1)
-    in2isMinus = out1 < LP
-    out2 = asin(n*sin(in2))
-    if in2isMinus:
-        out = LP-out2 #負で正しい
-    else:
-        out = LP+out2 #正で正しい
-        assert(out<pi/2) #隣の絶壁にぶつかるのは考えない
-    return degrees(out)
-def kabe(out1,LP):
-    ret = []
-    try:
-        in2 = pi/2 - out1
-        out2 = asin(n*sin(in2))
-        out = out2 - pi/2 #負で正しい
-        ret.append(degrees(out))
-    except:
-        pass
-    try:
-        ret.append(out1isPlus(out1,LP))
-    except:
-        pass
+    if out1 > -(pi/2 - LP): #左斜面
+        in2 = out1 - LP
+        try:
+            out2 = asin(n*sin(in2))
+            out = out2 + LP
+            ret.append(degrees(out))
+        except:
+            pass
+    if out1 < 0: # 壁
+        in2 = pi/2 + out1 #out1<0に注意
+        try:
+            out2 = asin(n*sin(in2))
+            out = out2 - pi/2
+            ret.append(degrees(out))
+        except:
+            out1 = -out1
+            if out1 > -(pi/2 - LP): #左斜面
+                in2 = out1 - LP
+                try:
+                    out2 = asin(n*sin(in2))
+                    out = out2 + LP
+                    ret.append(degrees(out))
+                except:
+                    pass
     return ret
 
 def plot():
@@ -72,6 +57,8 @@ def plot():
     plt.title("プリズムシートLP平面から入射", fontname="MS Gothic")
     plt.xlabel("プリズムシート入射角 [deg]", fontname="MS Gothic")
     plt.ylabel("プリズムシート出射角 [deg]", fontname="MS Gothic")
+    plt.xlim(-90,90)
+    plt.ylim(-90,90)
     plt.legend()
     plt.show()
-# plot()
+plot()

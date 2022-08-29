@@ -16,7 +16,10 @@ def plotLP(on = False, flatisout=True, recommend=False):
         ranges = [i/10 for i in range(-899,900)]
         for i in ranges:
             try:
-                tmp = LP_into_flat(i,LP=LP) if flatisout else LP_outfrom_flat(i,LP=LP)
+                if on:
+                    tmp = LP_into_flat(i-45,LP=LP) if flatisout else LP_outfrom_flat(i-45,LP=LP)
+                else:
+                    tmp = LP_into_flat(i,LP=LP) if flatisout else LP_outfrom_flat(i,LP=LP)
                 out = []
                 for j in tmp:
                     if recommend:
@@ -36,7 +39,10 @@ def plotLP(on = False, flatisout=True, recommend=False):
                 out = []
             for j in out:
                 x.append(i)
-                y.append(j)
+                if on:
+                    y.append(j-45)
+                else:
+                    y.append(j)
         plt.scatter(x,y,label="LP=%d°"%LP,s = 5)
     titleOn = "プリズムシート(LP)ASKA3Dに貼り付けた場合" if on else "プリズムシート(LP)ASKA3Dに対し45°に置いた場合"
     titleOut = "(外側平面)" if flatisout else "(内側平面)"
