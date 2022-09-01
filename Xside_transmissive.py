@@ -22,7 +22,7 @@ def non_Xtransmissive(deg = 45):
                 if not (-90 < theta_out0 < 90):
                     continue
                 theta_out1 = theta_out0
-                phi_out = thetaASKAout
+                phi_out = phiASKAout
                 print("%d,%f,%d,%f,%f,%f,%f,%f,%f,%f"%(theta_in0,theta_in1,phi_in,thetaASKAin,phiASKAin,thetaASKAout,phiASKAout,theta_out0,theta_out1,phi_out), file=g)
 
 def LP_Xtransmissive(deg = 45, flatisout = True, LP = 40):
@@ -41,7 +41,7 @@ def LP_Xtransmissive(deg = 45, flatisout = True, LP = 40):
                     if not (-90 < theta_out0 < 90):
                         continue
                     theta_out1s = LP_outfrom_flat(theta_out0,LP=LP) if flatisout else LP_into_flat(theta_out0,LP=LP)
-                    phi_out = thetaASKAout
+                    phi_out = phiASKAout
                     for theta_out1 in theta_out1s:
                         print("%d,%f,%d,%f,%f,%f,%f,%f,%f,%f"%(theta_in0,theta_in1,phi_in,thetaASKAin,phiASKAin,thetaASKAout,phiASKAout,theta_out0,theta_out1,phi_out), file=g)
 
@@ -61,7 +61,7 @@ def LPV_Xtransmissive(deg = 45, flatisout = True, LPV = 90):
                     if not (-90 < theta_out0 < 90):
                         continue
                     theta_out1s = LPV_outfrom_flat(theta_out0,LPV=LPV) if flatisout else LPV_into_flat(theta_out0,LPV=LPV)
-                    phi_out = thetaASKAout
+                    phi_out = phiASKAout
                     for theta_out1 in theta_out1s:
                         print("%d,%f,%d,%f,%f,%f,%f,%f,%f,%f"%(theta_in0,theta_in1,phi_in,thetaASKAin,phiASKAin,thetaASKAout,phiASKAout,theta_out0,theta_out1,phi_out), file=g)
 
