@@ -71,10 +71,10 @@ def plotLPV(on = False, flatisout=True, recommend=False, deg = 45):
         ranges = [i/10 for i in range(-899,900)]
         for i in ranges:
             try:
-                if on:
-                    tmp = LPV_into_flat(i-45,LPV=LPV) if flatisout else LPV_outfrom_flat(i-45,LPV=LPV)
-                else:
-                    tmp = LPV_into_flat(i,LPV=LPV) if flatisout else LPV_outfrom_flat(i,LPV=LPV)
+                # if on:
+                #     tmp = LPV_into_flat(i-45,LPV=LPV) if flatisout else LPV_outfrom_flat(i-45,LPV=LPV)
+                # else:
+                tmp = LPV_into_flat(i,LPV=LPV) if flatisout else LPV_outfrom_flat(i,LPV=LPV)
                 out = []
                 for j in tmp:
                     if recommend:
@@ -94,10 +94,10 @@ def plotLPV(on = False, flatisout=True, recommend=False, deg = 45):
                 out = []
             for j in out:
                 x.append(i)
-                if on:
-                    y.append(j-45)
-                else:
-                    y.append(j)
+                # if on:
+                #     y.append(j-45)
+                # else:
+                y.append(j)
         plt.scatter(x,y,label="LPV=%d°"%LPV,s = 5)
     titleOn = "プリズムシート(LPV)ASKA3Dに貼り付けた場合" if on else "プリズムシート(LPV)ASKA3Dに対し45°に置いた場合"
     titleOut = "(外側平面)" if flatisout else "(内側平面)"

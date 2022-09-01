@@ -58,4 +58,6 @@ def plot():
     plt.ylim(-90,90)
     plt.legend()
     plt.show()
-# plot()
+
+if __name__ == "__main__":
+    plot()

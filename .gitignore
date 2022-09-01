@@ -2,3 +2,4 @@
 *.txt
 *.pptx
 __pycache__/
+*.csv

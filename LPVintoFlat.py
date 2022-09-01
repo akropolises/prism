@@ -59,4 +59,6 @@ def plot():
     
     plt.legend()
     plt.show()
-# plot()
+
+if __name__ == "__main__":
+    plot()
