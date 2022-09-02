@@ -6,7 +6,7 @@ from numpy import NaN
 def prism(incidentAngle_deg, n = 1.52, mittyaku = False, siten = False):
     assert(-90<incidentAngle_deg<90)
     isMinus = incidentAngle_deg < 0
-    in1 = radians(incidentAngle_deg)*((-1)**isMinus)
+    in1 = abs(radians(incidentAngle_deg))
     # 完全密着時視点側
     if siten and mittyaku:
         out1 = in1
@@ -23,9 +23,11 @@ def prism(incidentAngle_deg, n = 1.52, mittyaku = False, siten = False):
     #n*sin(in2) = 1*sin(out2)
     if mittyaku and not siten:
         return degrees(in2)*((-1)**in2isMinus)
-    out2 = asin(n*sin(in2))
-    return degrees(out2)*((-1)**in2isMinus)
-    
+    try:
+        out2 = asin(n*sin(in2))
+        return degrees(out2)*((-1)**in2isMinus)
+    except:
+        return NaN
 
 ns = [1.33,1.4,1.52]
 def plot_ASKA3D(mittyaku = False):
@@ -33,12 +35,9 @@ def plot_ASKA3D(mittyaku = False):
         x = []
         y = []
         for i in range(-89,90):
-            try:
-                out = prism(i,n=n,mittyaku=mittyaku)
-                # if -65<=out<=-25:
-                #     print(i)
-            except:
-                out = NaN
+            out = prism(i,n=n,mittyaku=mittyaku)
+            # if -65<=out<=-25:
+            #     print(i)
             x.append(i)
             y.append(out)
         plt.plot(x,y,label="n=%.2f"%n)
@@ -82,9 +81,14 @@ def plot(mittyaku = False,recommend = False):
     plt.ylim(-90,90)
     plt.legend()
     plt.show()
-# plot_ASKA3D(mittyaku=False)
-# plot_ASKA3D(mittyaku=True)
-plot(mittyaku=False)
-plot(mittyaku=True)
-plot(mittyaku=False,recommend=True)
-plot(mittyaku=True,recommend=True)
+
+def main():
+    # plot_ASKA3D(mittyaku=False)
+    # plot_ASKA3D(mittyaku=True)
+    plot(mittyaku=False)
+    plot(mittyaku=True)
+    plot(mittyaku=False,recommend=True)
+    plot(mittyaku=True,recommend=True)
+
+if __name__ == "__main__":
+    main()

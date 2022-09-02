@@ -6,25 +6,28 @@ n = 1.49 #PMMA
 
 def idealRefractionIn(incidentAngle, n=1.49):
     in1 = radians(incidentAngle)
-    out1 = asin(sin(in1)/n)
-    return degrees(out1)
+    try:
+        out1 = asin(sin(in1)/n)
+        return degrees(out1)
+    except:
+        return NaN
 
 def idealRefractionOut(incidentAngle, n=1.49):
     in1 = radians(incidentAngle)
-    out1 = asin(n*sin(in1))
-    return degrees(out1)
+    try:
+        out1 = asin(n*sin(in1))
+        return degrees(out1)
+    except:
+        return NaN
 
 def plot(mode = "in"):
     x = []
     y = []
     for i in range(-89,90):
-        try:
-            if mode == "in":
-                out = idealRefractionIn(i)
-            else:
-                out = idealRefractionOut(i)
-        except:
-            out = NaN
+        if mode == "in":
+            out = idealRefractionIn(i)
+        else:
+            out = idealRefractionOut(i)
         x.append(i)
         y.append(out)
     plt.plot(x,y)
@@ -54,17 +57,11 @@ def plotWithASKA3D(recommend=False):
         j = after-45
         if recommend:
             if -65 <= before <= -25 or 25 <= before <= 65:
-                try:
-                    out = idealRefractionOut(j)
-                except:
-                    out = NaN
+                out = idealRefractionOut(j)
             else:
                 out = NaN
         else:
-            try:
-                out = idealRefractionOut(j)
-            except:
-                out = NaN
+            out = idealRefractionOut(j)
         x.append(i)
         y.append(out)
     plt.plot(x,y)
@@ -78,5 +75,6 @@ def plotWithASKA3D(recommend=False):
     plt.legend()
     plt.show()
 
-# plotWithASKA3D()
-# plotWithASKA3D(recommend=True)
+if __name__ == "__main__":
+    plotWithASKA3D()
+    plotWithASKA3D(recommend=True)
