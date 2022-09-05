@@ -1,11 +1,4 @@
-from math import sin, asin, pi, degrees, radians
-from turtle import title
 import matplotlib.pyplot as plt
-from numpy import NaN
-from LPintoFlat import LP_into_flat
-from LPoutfromFlat import LP_outfrom_flat
-from LPVintoFlat import LPV_into_flat
-from LPVoutfromFlat import LPV_outfrom_flat
 
 LPs = [15,23,25,30,40]
 LPVs = [40,45,60,65,70,75,90,130,140,160]
@@ -30,7 +23,10 @@ def plot(arg, title):
     plt.legend()
     plt.show()
 
-# arg = [("imaging_non_45.csv","結像光")] 
+# arg = [("imaging_non_45.csv","imaging light")]
+# arg = [("transmissive_non_45.csv","W-side")]
+# arg = [("Xtransmissive_non_45.csv","X-side")]
+# arg = [("Ytransmissive_non_45.csv","Y-side")]
 # arg = [("imaging_non_45.csv","imaging light"), ("transmissive_non_45.csv","both side"), 
 #     ("Xtransmissive_non_45.csv","X side"), ("Ytransmissive_non_45.csv","Y side")]
 # title = "屈折無し"

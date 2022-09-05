@@ -180,7 +180,9 @@ def idealver(mode:str, deg = 45, recommend = False):
                     if -65 <= thetaASKAin <= -25 or 25 <= thetaASKAin <= 65:
                         continue
             for phi_in in range(-89,90):
-                phiASKAin = phi_in
+                phiASKAin = idealRefractionIn(phi_in)
+                if not (-90 < phiASKAin < 90):
+                    continue
                 if recommend:
                     if mode == "I":
                         if not (-65 <= phiASKAin <= -25 or 25 <= phiASKAin <= 65):
@@ -194,7 +196,7 @@ def idealver(mode:str, deg = 45, recommend = False):
                 if not (-90 < theta_out0 < 90):
                     continue
                 theta_out1 = idealRefractionOut(theta_out0)
-                phi_out = phiASKAout
+                phi_out = idealRefractionOut(phiASKAout)
                 print("%d,%f,%d,%f,%f,%f,%f,%f,%f,%f"%(theta_in0,theta_in1,phi_in,thetaASKAin,phiASKAin,thetaASKAout,phiASKAout,theta_out0,theta_out1,phi_out), file=g)
 
 
