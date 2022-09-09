@@ -1,4 +1,4 @@
-from math import acos,cos,radians
+from math import acos,cos,degrees,sin,radians
 import matplotlib.pyplot as plt
 from LPintoFlat import LP_into_flat
 from LPoutfromFlat import LP_outfrom_flat
@@ -23,7 +23,9 @@ def non(mode:str, deg = 45, recommend = False):
         for phi_in in range(-89,90):
             phiASKAin = phi_in
             if recommend:
-                psi = 90 - radians(abs(acos((cos(thetaASKAin)+cos(phiASKAin))/((2+2*cos(thetaASKAin)*cos(phiASKAin))**(1/2)))))
+                thetaR = radians(thetaASKAin)
+                phiR = radians(phiASKAin)
+                psi = 90 - degrees(acos((cos(thetaR)*cos(phiR))/((cos(thetaR)**2 + (cos(phiR)*sin(thetaR))**2)**(1/2))))
                 if mode == "I":
                     if not (25 <= psi <= 65):
                         continue
@@ -58,7 +60,9 @@ def LPver(mode:str, deg = 45, flatisout = True, LP = 40, recommend = False):
             for phi_in in range(-89,90):
                 phiASKAin = phi_in
                 if recommend:
-                    psi = 90 - radians(abs(acos((cos(thetaASKAin)+cos(phiASKAin))/((2+2*cos(thetaASKAin)*cos(phiASKAin))**(1/2)))))
+                    thetaR = radians(thetaASKAin)
+                    phiR = radians(phiASKAin)
+                    psi = 90 - degrees(acos((cos(thetaR)*cos(phiR))/((cos(thetaR)**2 + (cos(phiR)*sin(thetaR))**2)**(1/2))))
                     if mode == "I":
                         if not (25 <= psi <= 65):
                             continue
@@ -94,7 +98,9 @@ def LPVver(mode:str, deg = 45, flatisout = True, LPV = 90, recommend = False):
             for phi_in in range(-89,90):
                 phiASKAin = phi_in
                 if recommend:
-                    psi = 90 - radians(abs(acos((cos(thetaASKAin)+cos(phiASKAin))/((2+2*cos(thetaASKAin)*cos(phiASKAin))**(1/2)))))
+                    thetaR = radians(thetaASKAin)
+                    phiR = radians(phiASKAin)
+                    psi = 90 - degrees(acos((cos(thetaR)*cos(phiR))/((cos(thetaR)**2 + (cos(phiR)*sin(thetaR))**2)**(1/2))))
                     if mode == "I":
                         if not (25 <= psi <= 65):
                             continue
@@ -128,7 +134,9 @@ def prismver(mode:str, recommend = False):
         for phi_in in range(-89,90):
             phiASKAin = phi_in
             if recommend:
-                psi = 90 - radians(abs(acos((cos(thetaASKAin)+cos(phiASKAin))/((2+2*cos(thetaASKAin)*cos(phiASKAin))**(1/2)))))
+                thetaR = radians(thetaASKAin)
+                phiR = radians(phiASKAin)
+                psi = 90 - degrees(acos((cos(thetaR)*cos(phiR))/((cos(thetaR)**2 + (cos(phiR)*sin(thetaR))**2)**(1/2))))
                 if mode == "I":
                     if not (25 <= psi <= 65):
                         continue
@@ -163,7 +171,9 @@ def idealver(mode:str, deg = 45, recommend = False):
             if not (-90 < phiASKAin < 90):
                 continue
             if recommend:
-                psi = 90 - radians(abs(acos((cos(thetaASKAin)+cos(phiASKAin))/((2+2*cos(thetaASKAin)*cos(phiASKAin))**(1/2)))))
+                thetaR = radians(thetaASKAin)
+                phiR = radians(phiASKAin)
+                psi = 90 - degrees(acos((cos(thetaR)*cos(phiR))/((cos(thetaR)**2 + (cos(phiR)*sin(thetaR))**2)**(1/2))))
                 if mode == "I":
                     if not (25 <= psi <= 65):
                         continue
@@ -308,8 +318,9 @@ if __name__ == "__main__":
     # for i in (30,40):
     #     for j in (30,45,50):
     #         All_mode("LP",deg=j, LP=i, flatisout=False, recommend=True)
-    # for i in (30,40,45):
+    # for i in (30,45,50):
         # All_mode("LPV",deg = i, LPV=90)
-    All_mode("LP",deg = 30, LP=40,recommend=True)
+        # All_mode("LP",deg = i, LP=30, flatisout=False, recommend=True)
+    All_mode("LP",deg = 50, LP=40, recommend=True)
     # All_condition("W")
     pass
