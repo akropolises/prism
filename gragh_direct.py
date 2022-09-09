@@ -1,3 +1,4 @@
+from math import acos,cos,radians
 import matplotlib.pyplot as plt
 from LPintoFlat import LP_into_flat
 from LPoutfromFlat import LP_outfrom_flat
@@ -19,31 +20,28 @@ def non(mode:str, deg = 45, recommend = False):
         thetaASKAin = theta_in1 - deg
         if not (-90 < thetaASKAin < 90):
             continue
-        if recommend:
-            if mode == "I":
-                if not (-65 <= thetaASKAin <= -25 or 25 <= thetaASKAin <= 65):
-                    continue
-            else:
-                if -65 <= thetaASKAin <= -25 or 25 <= thetaASKAin <= 65:
-                    continue
         for phi_in in range(-89,90):
             phiASKAin = phi_in
             if recommend:
+                psi = 90 - radians(abs(acos((cos(thetaASKAin)+cos(phiASKAin))/((2+2*cos(thetaASKAin)*cos(phiASKAin))**(1/2)))))
                 if mode == "I":
-                    if not (-65 <= phiASKAin <= -25 or 25 <= phiASKAin <= 65):
+                    if not (25 <= psi <= 65):
                         continue
                 else:
-                    if -65 <= phiASKAin <= -25 or 25 <= phiASKAin <= 65:
+                    if 25 <= psi <= 65:
                         continue
             ASKAdict = {"I":(-thetaASKAin, -phiASKAin), "W":(thetaASKAin, phiASKAin), "X":(phiASKAin, thetaASKAin), "Y":(-phiASKAin, -thetaASKAin)}
             thetaASKAout, phiASKAout = ASKAdict[mode]
             theta_out0 = thetaASKAout - deg
             if not (-90 < theta_out0 < 90):
-                continue
-            theta_out1 = theta_out0
-            phi_out = phiASKAout
-            theta.append(theta_out1)
-            phi.append(phi_out)
+                if mode != "I":
+                    theta.append(thetaASKAout)
+                    phi.append(phiASKAout)
+            else:
+                theta_out1 = theta_out0
+                phi_out = phiASKAout
+                theta.append(theta_out1 + deg)
+                phi.append(phi_out)
     return theta, phi
 
 def LPver(mode:str, deg = 45, flatisout = True, LP = 40, recommend = False):
@@ -57,32 +55,29 @@ def LPver(mode:str, deg = 45, flatisout = True, LP = 40, recommend = False):
             thetaASKAin = theta_in1 - deg
             if not (-90 < thetaASKAin < 90):
                 continue
-            if recommend:
-                if mode == "I":
-                    if not (-65 <= thetaASKAin <= -25 or 25 <= thetaASKAin <= 65):
-                        continue
-                else:
-                    if -65 <= thetaASKAin <= -25 or 25 <= thetaASKAin <= 65:
-                        continue
             for phi_in in range(-89,90):
                 phiASKAin = phi_in
                 if recommend:
+                    psi = 90 - radians(abs(acos((cos(thetaASKAin)+cos(phiASKAin))/((2+2*cos(thetaASKAin)*cos(phiASKAin))**(1/2)))))
                     if mode == "I":
-                        if not (-65 <= phiASKAin <= -25 or 25 <= phiASKAin <= 65):
+                        if not (25 <= psi <= 65):
                             continue
                     else:
-                        if -65 <= phiASKAin <= -25 or 25 <= phiASKAin <= 65:
+                        if 25 <= psi <= 65:
                             continue
                 ASKAdict = {"I":(-thetaASKAin, -phiASKAin), "W":(thetaASKAin, phiASKAin), "X":(phiASKAin, thetaASKAin), "Y":(-phiASKAin, -thetaASKAin)}
                 thetaASKAout, phiASKAout = ASKAdict[mode]
                 theta_out0 = thetaASKAout - deg
                 if not (-90 < theta_out0 < 90):
-                    continue
-                theta_out1s = LP_outfrom_flat(theta_out0,LP=LP) if flatisout else LP_into_flat(theta_out0,LP=LP)
-                phi_out = phiASKAout
-                for theta_out1 in theta_out1s:
-                    theta.append(theta_out1)
-                    phi.append(phi_out)
+                    if mode != "I":
+                        theta.append(thetaASKAout)
+                        phi.append(phiASKAout)
+                else:
+                    theta_out1s = LP_outfrom_flat(theta_out0,LP=LP) if flatisout else LP_into_flat(theta_out0,LP=LP)
+                    phi_out = phiASKAout
+                    for theta_out1 in theta_out1s:
+                        theta.append(theta_out1+deg)
+                        phi.append(phi_out)
     return theta, phi
 
 def LPVver(mode:str, deg = 45, flatisout = True, LPV = 90, recommend = False):
@@ -96,32 +91,29 @@ def LPVver(mode:str, deg = 45, flatisout = True, LPV = 90, recommend = False):
             thetaASKAin = theta_in1 - deg
             if not (-90 < thetaASKAin < 90):
                 continue
-            if recommend:
-                if mode == "I":
-                    if not (-65 <= thetaASKAin <= -25 or 25 <= thetaASKAin <= 65):
-                        continue
-                else:
-                    if -65 <= thetaASKAin <= -25 or 25 <= thetaASKAin <= 65:
-                        continue
             for phi_in in range(-89,90):
                 phiASKAin = phi_in
                 if recommend:
+                    psi = 90 - radians(abs(acos((cos(thetaASKAin)+cos(phiASKAin))/((2+2*cos(thetaASKAin)*cos(phiASKAin))**(1/2)))))
                     if mode == "I":
-                        if not (-65 <= phiASKAin <= -25 or 25 <= phiASKAin <= 65):
+                        if not (25 <= psi <= 65):
                             continue
                     else:
-                        if -65 <= phiASKAin <= -25 or 25 <= phiASKAin <= 65:
+                        if 25 <= psi <= 65:
                             continue
                 ASKAdict = {"I":(-thetaASKAin, -phiASKAin), "W":(thetaASKAin, phiASKAin), "X":(phiASKAin, thetaASKAin), "Y":(-phiASKAin, -thetaASKAin)}
                 thetaASKAout, phiASKAout = ASKAdict[mode]
                 theta_out0 = thetaASKAout - deg
                 if not (-90 < theta_out0 < 90):
-                    continue
-                theta_out1s = LPV_outfrom_flat(theta_out0,LPV=LPV) if flatisout else LPV_into_flat(theta_out0,LPV=LPV)
-                phi_out = phiASKAout
-                for theta_out1 in theta_out1s:
-                    theta.append(theta_out1)
-                    phi.append(phi_out)
+                    if mode != "I":
+                        theta.append(thetaASKAout)
+                        phi.append(phiASKAout)
+                else:
+                    theta_out1s = LPV_outfrom_flat(theta_out0,LPV=LPV) if flatisout else LPV_into_flat(theta_out0,LPV=LPV)
+                    phi_out = phiASKAout
+                    for theta_out1 in theta_out1s:
+                        theta.append(theta_out1 + deg)
+                        phi.append(phi_out)
     return theta, phi
 
 def prismver(mode:str, recommend = False):
@@ -133,30 +125,27 @@ def prismver(mode:str, recommend = False):
         thetaASKAin = prism(theta_in,siten=False)
         if not (-90 < thetaASKAin < 90):
             continue
-        if recommend:
-            if mode == "I":
-                if not (-65 <= thetaASKAin <= -25 or 25 <= thetaASKAin <= 65):
-                    continue
-            else:
-                if -65 <= thetaASKAin <= -25 or 25 <= thetaASKAin <= 65:
-                    continue
         for phi_in in range(-89,90):
             phiASKAin = phi_in
             if recommend:
+                psi = 90 - radians(abs(acos((cos(thetaASKAin)+cos(phiASKAin))/((2+2*cos(thetaASKAin)*cos(phiASKAin))**(1/2)))))
                 if mode == "I":
-                    if not (-65 <= phiASKAin <= -25 or 25 <= phiASKAin <= 65):
+                    if not (25 <= psi <= 65):
                         continue
                 else:
-                    if -65 <= phiASKAin <= -25 or 25 <= phiASKAin <= 65:
+                    if 25 <= psi <= 65:
                         continue
             ASKAdict = {"I":(-thetaASKAin, -phiASKAin), "W":(thetaASKAin, phiASKAin), "X":(phiASKAin, thetaASKAin), "Y":(-phiASKAin, -thetaASKAin)}
             thetaASKAout, phiASKAout = ASKAdict[mode]
             theta_out = prism(thetaASKAout,siten=True)
             if not (-90 < theta_out < 90):
-                continue
-            phi_out = phiASKAout
-            theta.append(theta_out)
-            phi.append(phi_out)
+                if mode != "I":
+                    theta.append(thetaASKAout)
+                    phi.append(phiASKAout)
+            else:
+                phi_out = phiASKAout
+                theta.append(theta_out + 45)
+                phi.append(phi_out)
     return theta, phi
 
 def idealver(mode:str, deg = 45, recommend = False):
@@ -169,33 +158,30 @@ def idealver(mode:str, deg = 45, recommend = False):
         thetaASKAin = theta_in1 - deg
         if not (-90 < thetaASKAin < 90):
             continue
-        if recommend:
-            if mode == "I":
-                if not (-65 <= thetaASKAin <= -25 or 25 <= thetaASKAin <= 65):
-                    continue
-            else:
-                if -65 <= thetaASKAin <= -25 or 25 <= thetaASKAin <= 65:
-                    continue
         for phi_in in range(-89,90):
             phiASKAin = idealRefractionIn(phi_in)
             if not (-90 < phiASKAin < 90):
                 continue
             if recommend:
+                psi = 90 - radians(abs(acos((cos(thetaASKAin)+cos(phiASKAin))/((2+2*cos(thetaASKAin)*cos(phiASKAin))**(1/2)))))
                 if mode == "I":
-                    if not (-65 <= phiASKAin <= -25 or 25 <= phiASKAin <= 65):
+                    if not (25 <= psi <= 65):
                         continue
                 else:
-                    if -65 <= phiASKAin <= -25 or 25 <= phiASKAin <= 65:
+                    if 25 <= psi <= 65:
                         continue
             ASKAdict = {"I":(-thetaASKAin, -phiASKAin), "W":(thetaASKAin, phiASKAin), "X":(phiASKAin, thetaASKAin), "Y":(-phiASKAin, -thetaASKAin)}
             thetaASKAout, phiASKAout = ASKAdict[mode]
             theta_out0 = thetaASKAout - deg
             if not (-90 < theta_out0 < 90):
-                continue
-            theta_out1 = idealRefractionOut(theta_out0)
-            phi_out = idealRefractionOut(phiASKAout)
-            theta.append(theta_out1)
-            phi.append(phi_out)
+                if mode != "I":
+                    theta.append(thetaASKAout)
+                    phi.append(phiASKAout)
+            else:
+                theta_out1 = idealRefractionOut(theta_out0)
+                phi_out = idealRefractionOut(phiASKAout)
+                theta.append(theta_out1 + deg)
+                phi.append(phi_out)
     return theta, phi
 
 
@@ -204,25 +190,26 @@ def unitPlot(mode:str, condition:str, deg = 45, flatisout = True, LP = 40, LPV =
     assert(mode in {"I","W","X","Y"})
     assert(condition in {"non", "LP", "LPV", "prism", "ideal"})
     labeldict = {"W": "W-side", "X":"X-side", "Y":"Y-side", "I":"imaging light"}
+    colordict = {"I":"tab:blue", "W":"tab:orange", "X":"tab:green", "Y":"tab:red"}
     if condition == "non":
         x,y = non(mode,deg=deg,recommend=recommend)
-        plt.scatter(x, y, label=labeldict[mode], s=5)
+        plt.scatter(x, y, label=labeldict[mode], s=5, c=colordict[mode])
         plt.title("屈折無し", fontname="MS Gothic")
     elif condition == "LP":
         x,y = LPver(mode,deg=deg,flatisout=flatisout,LP=LP,recommend=recommend)
-        plt.scatter(x, y, label=labeldict[mode], s=5)
+        plt.scatter(x, y, label=labeldict[mode], s=5, c=colordict[mode])
         plt.title("LP%d"%LP, fontname="MS Gothic")
     elif condition == "LPV":
         x,y = LPVver(mode,deg=deg,flatisout=flatisout,LPV=LPV,recommend=recommend)
-        plt.scatter(x, y, label=labeldict[mode], s=5)
+        plt.scatter(x, y, label=labeldict[mode], s=5, c=colordict[mode])
         plt.title("LPV%d"%LPV, fontname="MS Gothic")
     elif condition == "prism":
         x,y = prismver(mode,recommend=recommend)
-        plt.scatter(x, y, label=labeldict[mode], s=5)
+        plt.scatter(x, y, label=labeldict[mode], s=5, c=colordict[mode])
         plt.title("直角プリズム", fontname="MS Gothic")
     elif condition == "ideal":
         x,y = idealver(mode,deg=deg, recommend=recommend)
-        plt.scatter(x, y, label=labeldict[mode], s=5)
+        plt.scatter(x, y, label=labeldict[mode], s=5, c=colordict[mode])
         plt.title("理想状態", fontname="MS Gothic")
     plt.xlabel("方位角 [deg]", fontname="MS Gothic")
     plt.ylabel("仰角 [deg]", fontname="MS Gothic")
@@ -314,16 +301,15 @@ def All_condition(mode:str, deg = 45, flatisout = True, LP = 40, LPV = 90, recom
     plt.show()
 
 if __name__ == "__main__":
-    # All_mode("All",deg = 0)
-    All_mode("ideal",deg=40)
+    # All_mode("All",recommend=True)
+    # All_mode("ideal",deg=40)
     # for i in ("I","W","X","Y"):
-    #     unitPlot(i,"ideal",deg=0)
-    # All_mode("LPV",LPV=75,flatisout=False)
-    # All_mode("LPV",LPV=130,flatisout=False)
+    #     unitPlot(i,"non")
+    # for i in (30,40):
+    #     for j in (30,45,50):
+    #         All_mode("LP",deg=j, LP=i, flatisout=False, recommend=True)
     # for i in (30,40,45):
         # All_mode("LPV",deg = i, LPV=90)
-        # All_mode("LP",deg = i, LP=40,flatisout=False)
-    # All_mode("LP",deg = 0,flatisout=False)
-    # All_mode("LPV",deg=0,flatisout=False)
+    All_mode("LP",deg = 30, LP=40,recommend=True)
     # All_condition("W")
     pass
