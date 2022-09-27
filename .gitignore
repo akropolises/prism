@@ -3,3 +3,4 @@
 *.pptx
 __pycache__/
 *.csv
+sin.py
