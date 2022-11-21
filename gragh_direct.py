@@ -42,7 +42,7 @@ def non(mode:str, deg = 45, recommend = False):
             else:
                 theta_out1 = theta_out0
                 phi_out = phiASKAout
-                theta.append(theta_out1 + deg)
+                theta.append(theta_out1)
                 phi.append(phi_out)
     return theta, phi
 
@@ -80,7 +80,7 @@ def LPver(mode:str, deg = 45, flatisout = True, LP = 40, recommend = False):
                     theta_out1s = LP_outfrom_flat(theta_out0,LP=LP) if flatisout else LP_into_flat(theta_out0,LP=LP)
                     phi_out = phiASKAout
                     for theta_out1 in theta_out1s:
-                        theta.append(theta_out1+deg)
+                        theta.append(theta_out1)
                         phi.append(phi_out)
     return theta, phi
 
@@ -118,7 +118,7 @@ def LPVver(mode:str, deg = 45, flatisout = True, LPV = 90, recommend = False):
                     theta_out1s = LPV_outfrom_flat(theta_out0,LPV=LPV) if flatisout else LPV_into_flat(theta_out0,LPV=LPV)
                     phi_out = phiASKAout
                     for theta_out1 in theta_out1s:
-                        theta.append(theta_out1 + deg)
+                        theta.append(theta_out1)
                         phi.append(phi_out)
     return theta, phi
 
@@ -152,7 +152,7 @@ def prismver(mode:str, recommend = False):
                     phi.append(phiASKAout)
             else:
                 phi_out = phiASKAout
-                theta.append(theta_out + 45)
+                theta.append(theta_out)
                 phi.append(phi_out)
     return theta, phi
 
@@ -190,7 +190,7 @@ def idealver(mode:str, deg = 45, recommend = False):
             else:
                 theta_out1 = idealRefractionOut(theta_out0)
                 phi_out = idealRefractionOut(phiASKAout)
-                theta.append(theta_out1 + deg)
+                theta.append(theta_out1)
                 phi.append(phi_out)
     return theta, phi
 
@@ -204,7 +204,7 @@ def unitPlot(mode:str, condition:str, deg = 45, flatisout = True, LP = 40, LPV =
     if condition == "non":
         x,y = non(mode,deg=deg,recommend=recommend)
         plt.scatter(x, y, label=labeldict[mode], s=5, c=colordict[mode])
-        plt.title("屈折無し", fontname="MS Gothic")
+        plt.title("屈折なし", fontname="MS Gothic")
     elif condition == "LP":
         x,y = LPver(mode,deg=deg,flatisout=flatisout,LP=LP,recommend=recommend)
         plt.scatter(x, y, label=labeldict[mode], s=5, c=colordict[mode])
@@ -223,7 +223,7 @@ def unitPlot(mode:str, condition:str, deg = 45, flatisout = True, LP = 40, LPV =
         plt.title("理想状態", fontname="MS Gothic")
     plt.xlabel("方位角 [deg]", fontname="MS Gothic")
     plt.ylabel("仰角 [deg]", fontname="MS Gothic")
-    plt.xlim(-90,90+deg)
+    plt.xlim(-90,90)
     plt.ylim(-90,90)
     plt.legend(prop={"family":"MS Gothic"})
     plt.show()
@@ -236,10 +236,10 @@ def All_mode(mode:str, deg = 45, flatisout = True, LP = 40, LPV = 90, recommend 
         for i in ("I","W","X","Y"):
             x,y = non(i,deg=deg, recommend=recommend)
             plt.scatter(x, y, label=labeldict[i], s=5)
-        plt.title("屈折無し", fontname="MS Gothic")
+        plt.title("屈折なし", fontname="MS Gothic")
         plt.xlabel("方位角 [deg]", fontname="MS Gothic")
         plt.ylabel("仰角 [deg]", fontname="MS Gothic")
-        plt.xlim(-90,90+deg)
+        plt.xlim(-90,90)
         plt.ylim(-90,90)
         plt.legend(prop={"family":"MS Gothic"})
         plt.show()
@@ -250,7 +250,7 @@ def All_mode(mode:str, deg = 45, flatisout = True, LP = 40, LPV = 90, recommend 
         plt.title("LP%d_%d"%(LP,deg), fontname="MS Gothic")
         plt.xlabel("方位角 [deg]", fontname="MS Gothic")
         plt.ylabel("仰角 [deg]", fontname="MS Gothic")
-        plt.xlim(-90,90+deg)
+        plt.xlim(-90,90)
         plt.ylim(-90,90)
         plt.legend(prop={"family":"MS Gothic"})
         plt.show()
@@ -261,7 +261,7 @@ def All_mode(mode:str, deg = 45, flatisout = True, LP = 40, LPV = 90, recommend 
         plt.title("LPV%d_%d"%(LPV,deg), fontname="MS Gothic")
         plt.xlabel("方位角 [deg]", fontname="MS Gothic")
         plt.ylabel("仰角 [deg]", fontname="MS Gothic")
-        plt.xlim(-90,90+deg)
+        plt.xlim(-90,90)
         plt.ylim(-90,90)
         plt.legend(prop={"family":"MS Gothic"})
         plt.show()
@@ -272,7 +272,7 @@ def All_mode(mode:str, deg = 45, flatisout = True, LP = 40, LPV = 90, recommend 
         plt.title("直角プリズム", fontname="MS Gothic")
         plt.xlabel("方位角 [deg]", fontname="MS Gothic")
         plt.ylabel("仰角 [deg]", fontname="MS Gothic")
-        plt.xlim(-90,90+deg)
+        plt.xlim(-90,90)
         plt.ylim(-90,90)
         plt.legend(prop={"family":"MS Gothic"})
         plt.show()
@@ -283,7 +283,7 @@ def All_mode(mode:str, deg = 45, flatisout = True, LP = 40, LPV = 90, recommend 
         plt.title("理想状態_%d"%deg, fontname="MS Gothic")
         plt.xlabel("方位角 [deg]", fontname="MS Gothic")
         plt.ylabel("仰角 [deg]", fontname="MS Gothic")
-        plt.xlim(-90,90+deg)
+        plt.xlim(-90,90)
         plt.ylim(-90,90)
         plt.legend(prop={"family":"MS Gothic"})
         plt.show()
@@ -305,16 +305,48 @@ def All_condition(mode:str, deg = 45, flatisout = True, LP = 40, LPV = 90, recom
     plt.title(titledict[mode], fontname="MS Gothic")
     plt.xlabel("方位角 [deg]", fontname="MS Gothic")
     plt.ylabel("仰角 [deg]", fontname="MS Gothic")
-    plt.xlim(-90,90+deg)
+    plt.xlim(-90,90)
     plt.ylim(-90,90)
     plt.legend(prop={"family":"MS Gothic"})
     plt.show()
 
+def compare_deg(mode:str, degs = [45], flatisout = True, LP = 40, LPV = 90, recommend = False):
+    assert(mode in {"non", "LP", "LPV", "prism", "ideal"})
+    labeldict = {"W": "両側透過光", "X":"X側透過光", "Y":"Y側透過光", "I":"結像光"}
+    Mdeg = max(deg)
+    for deg in degs:
+        for i in ("I","W","X","Y"):
+            if mode == "non":
+                x,y = non(i,deg=deg, recommend=recommend)
+                plt.title("屈折なし", fontname="MS Gothic")
+            elif mode == "LP":
+                x,y = LPver(i,deg=deg,flatisout=flatisout,LP=LP,recommend=recommend)
+                plt.title("LP%d_%d"%(LP,deg), fontname="MS Gothic")
+            elif mode == "LPV":
+                x,y = LPVver(i,deg=deg,flatisout=flatisout,LPV=LPV,recommend=recommend)
+                plt.title("LPV%d_%d"%(LPV,deg), fontname="MS Gothic")
+            elif mode == "prism":
+                x,y = prismver(i,recommend=recommend)
+                plt.title("直角プリズム", fontname="MS Gothic")
+            elif mode == "ideal":
+                x,y = idealver(i,deg=deg, recommend=recommend)
+                plt.title("理想状態_%d"%deg, fontname="MS Gothic")
+            else:
+                raise ValueError
+            nx = [i+deg for i in x]
+            plt.scatter(nx, y, label=labeldict[i], s=5)
+        plt.xlabel("方位角 [deg]", fontname="MS Gothic")
+        plt.ylabel("仰角 [deg]", fontname="MS Gothic")
+        plt.xlim(-90,90+Mdeg)
+        plt.ylim(-90,90)
+        plt.legend(prop={"family":"MS Gothic"})
+        plt.show()
+
 if __name__ == "__main__":
     # All_mode("All",recommend=True)
     # All_mode("ideal",deg=40)
-    for i in ("I","W","X","Y"):
-        unitPlot(i,"non")
+    # for i in ("I","W","X","Y"):
+    #     unitPlot(i,"non")
     # for i in (30,40):
     #     for j in (30,45,50):
     #         All_mode("LP",deg=j, LP=i, flatisout=False, recommend=True)
