@@ -2,6 +2,9 @@ from math import sin, asin, pi, degrees, radians
 import matplotlib.pyplot as plt
 from numpy import NaN
 
+#考察が不完全な時に書いたコード
+#../映像情報メディア学会/theory.pyを使え
+
 """n:BK7 1.51~1.53"""
 def prism(incidentAngle_deg, n = 1.52, mittyaku = False, siten = False):
     assert(-90<incidentAngle_deg<90)
@@ -35,7 +38,10 @@ def plot_ASKA3D(mittyaku = False):
         x = []
         y = []
         for i in range(-89,90):
-            out = prism(i,n=n,mittyaku=mittyaku)
+            try:
+                out = prism(i,n=n,mittyaku=mittyaku)
+            except:
+                continue
             # if -65<=out<=-25:
             #     print(i)
             x.append(i)
@@ -82,13 +88,47 @@ def plot(mittyaku = False,recommend = False):
     plt.legend()
     plt.show()
 
+def plot_RTPlate_rec():
+    # plt.rcParams["font.family"] = "MS Gothic"
+    plt.plot([-90,90],[-90-45,90-45],label="0回屈折")
+    x = []
+    y = []
+    for i in range(-89,90):
+        try:
+            out = prism(i,n=1.52,mittyaku=True)
+        except:
+            continue
+        x.append(i)
+        y.append(out)
+    plt.plot(x,y,label="1回屈折")
+    x = []
+    y = []
+    for i in range(-89,90):
+        try:
+            out = prism(i,n=1.52,mittyaku=False)
+        except:
+            continue
+        x.append(i)
+        y.append(out)
+    plt.plot(x,y,label="2回屈折")
+    plt.plot([-90,90],[-65,-65], color = "tab:red")
+    plt.plot([-90,90],[-25,-25], color = "tab:red")
+    # plt.title("屈折回数とRT Plate入射角の関係", fontname="MS Gothic")
+    plt.xlabel("第一屈折面入射角 [deg]", fontname="MS Gothic")
+    plt.ylabel("RT Plate入射角 [deg]", fontname="MS Gothic")
+    plt.xlim(-90,90)
+    plt.ylim(-90,0)
+    plt.legend(prop={"family":"MS Gothic"})
+    plt.show()
+
 def main():
     # plot_ASKA3D(mittyaku=False)
     # plot_ASKA3D(mittyaku=True)
-    plot(mittyaku=False)
-    plot(mittyaku=True)
-    plot(mittyaku=False,recommend=True)
-    plot(mittyaku=True,recommend=True)
+    # plot(mittyaku=False)
+    # plot(mittyaku=True)
+    # plot(mittyaku=False,recommend=True)
+    # plot(mittyaku=True,recommend=True)
+    plot_RTPlate_rec()
 
 if __name__ == "__main__":
     main()

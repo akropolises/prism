@@ -1,4 +1,4 @@
-from math import acos,cos,degrees,sin,radians
+from math import acos,cos,degrees,sin,radians,tan
 import matplotlib.pyplot as plt
 from LPintoFlat import LP_into_flat
 from LPoutfromFlat import LP_outfrom_flat
@@ -25,7 +25,7 @@ def non(mode:str, deg = 45, recommend = False):
             if recommend:
                 thetaR = radians(thetaASKAin)
                 phiR = radians(phiASKAin)
-                psi = 90 - degrees(acos((cos(thetaR)*cos(phiR))/((cos(thetaR)**2 + (cos(phiR)*sin(thetaR))**2)**(1/2))))
+                psi = 90 - degrees(acos(1/(tan(thetaR)**2 + tan(phiR)**2 + 1)**(1/2)))
                 if mode == "I":
                     if not (25 <= psi <= 65):
                         continue
@@ -62,7 +62,7 @@ def LPver(mode:str, deg = 45, flatisout = True, LP = 40, recommend = False):
                 if recommend:
                     thetaR = radians(thetaASKAin)
                     phiR = radians(phiASKAin)
-                    psi = 90 - degrees(acos((cos(thetaR)*cos(phiR))/((cos(thetaR)**2 + (cos(phiR)*sin(thetaR))**2)**(1/2))))
+                    psi = 90 - degrees(acos(1/(tan(thetaR)**2 + tan(phiR)**2 + 1)**(1/2)))
                     if mode == "I":
                         if not (25 <= psi <= 65):
                             continue
@@ -100,7 +100,7 @@ def LPVver(mode:str, deg = 45, flatisout = True, LPV = 90, recommend = False):
                 if recommend:
                     thetaR = radians(thetaASKAin)
                     phiR = radians(phiASKAin)
-                    psi = 90 - degrees(acos((cos(thetaR)*cos(phiR))/((cos(thetaR)**2 + (cos(phiR)*sin(thetaR))**2)**(1/2))))
+                    psi = 90 - degrees(acos(1/(tan(thetaR)**2 + tan(phiR)**2 + 1)**(1/2)))
                     if mode == "I":
                         if not (25 <= psi <= 65):
                             continue
@@ -136,7 +136,7 @@ def prismver(mode:str, recommend = False):
             if recommend:
                 thetaR = radians(thetaASKAin)
                 phiR = radians(phiASKAin)
-                psi = 90 - degrees(acos((cos(thetaR)*cos(phiR))/((cos(thetaR)**2 + (cos(phiR)*sin(thetaR))**2)**(1/2))))
+                psi = 90 - degrees(acos(1/(tan(thetaR)**2 + tan(phiR)**2 + 1)**(1/2)))
                 if mode == "I":
                     if not (25 <= psi <= 65):
                         continue
@@ -173,7 +173,7 @@ def idealver(mode:str, deg = 45, recommend = False):
             if recommend:
                 thetaR = radians(thetaASKAin)
                 phiR = radians(phiASKAin)
-                psi = 90 - degrees(acos((cos(thetaR)*cos(phiR))/((cos(thetaR)**2 + (cos(phiR)*sin(thetaR))**2)**(1/2))))
+                psi = 90 - degrees(acos(1/(tan(thetaR)**2 + tan(phiR)**2 + 1)**(1/2)))
                 if mode == "I":
                     if not (25 <= psi <= 65):
                         continue
@@ -199,7 +199,7 @@ def idealver(mode:str, deg = 45, recommend = False):
 def unitPlot(mode:str, condition:str, deg = 45, flatisout = True, LP = 40, LPV = 90, recommend = False):
     assert(mode in {"I","W","X","Y"})
     assert(condition in {"non", "LP", "LPV", "prism", "ideal"})
-    labeldict = {"W": "W-side", "X":"X-side", "Y":"Y-side", "I":"imaging light"}
+    labeldict = {"W": "両側透過光", "X":"X側透過光", "Y":"Y側透過光", "I":"結像光"}
     colordict = {"I":"tab:blue", "W":"tab:orange", "X":"tab:green", "Y":"tab:red"}
     if condition == "non":
         x,y = non(mode,deg=deg,recommend=recommend)
@@ -225,13 +225,13 @@ def unitPlot(mode:str, condition:str, deg = 45, flatisout = True, LP = 40, LPV =
     plt.ylabel("仰角 [deg]", fontname="MS Gothic")
     plt.xlim(-90,90+deg)
     plt.ylim(-90,90)
-    plt.legend()
+    plt.legend(prop={"family":"MS Gothic"})
     plt.show()
 
 
 def All_mode(mode:str, deg = 45, flatisout = True, LP = 40, LPV = 90, recommend = False):
     assert(mode in {"non", "LP", "LPV", "prism", "ideal", "All"})
-    labeldict = {"W": "W-side", "X":"X-side", "Y":"Y-side", "I":"imaging light"}
+    labeldict = {"W": "両側透過光", "X":"X側透過光", "Y":"Y側透過光", "I":"結像光"}
     if mode in ("non", "All"):
         for i in ("I","W","X","Y"):
             x,y = non(i,deg=deg, recommend=recommend)
@@ -241,7 +241,7 @@ def All_mode(mode:str, deg = 45, flatisout = True, LP = 40, LPV = 90, recommend 
         plt.ylabel("仰角 [deg]", fontname="MS Gothic")
         plt.xlim(-90,90+deg)
         plt.ylim(-90,90)
-        plt.legend()
+        plt.legend(prop={"family":"MS Gothic"})
         plt.show()
     if mode in ("LP", "All"):
         for i in ("I","W","X","Y"):
@@ -252,7 +252,7 @@ def All_mode(mode:str, deg = 45, flatisout = True, LP = 40, LPV = 90, recommend 
         plt.ylabel("仰角 [deg]", fontname="MS Gothic")
         plt.xlim(-90,90+deg)
         plt.ylim(-90,90)
-        plt.legend()
+        plt.legend(prop={"family":"MS Gothic"})
         plt.show()
     if mode in ("LPV", "All"):
         for i in ("I","W","X","Y"):
@@ -263,7 +263,7 @@ def All_mode(mode:str, deg = 45, flatisout = True, LP = 40, LPV = 90, recommend 
         plt.ylabel("仰角 [deg]", fontname="MS Gothic")
         plt.xlim(-90,90+deg)
         plt.ylim(-90,90)
-        plt.legend()
+        plt.legend(prop={"family":"MS Gothic"})
         plt.show()
     if mode in ("prism", "All"):
         for i in ("I","W","X","Y"):
@@ -274,7 +274,7 @@ def All_mode(mode:str, deg = 45, flatisout = True, LP = 40, LPV = 90, recommend 
         plt.ylabel("仰角 [deg]", fontname="MS Gothic")
         plt.xlim(-90,90+deg)
         plt.ylim(-90,90)
-        plt.legend()
+        plt.legend(prop={"family":"MS Gothic"})
         plt.show()
     if mode in ("ideal", "All"):
         for i in ("I","W","X","Y"):
@@ -285,7 +285,7 @@ def All_mode(mode:str, deg = 45, flatisout = True, LP = 40, LPV = 90, recommend 
         plt.ylabel("仰角 [deg]", fontname="MS Gothic")
         plt.xlim(-90,90+deg)
         plt.ylim(-90,90)
-        plt.legend()
+        plt.legend(prop={"family":"MS Gothic"})
         plt.show()
 
 def All_condition(mode:str, deg = 45, flatisout = True, LP = 40, LPV = 90, recommend = False):
@@ -307,14 +307,14 @@ def All_condition(mode:str, deg = 45, flatisout = True, LP = 40, LPV = 90, recom
     plt.ylabel("仰角 [deg]", fontname="MS Gothic")
     plt.xlim(-90,90+deg)
     plt.ylim(-90,90)
-    plt.legend()
+    plt.legend(prop={"family":"MS Gothic"})
     plt.show()
 
 if __name__ == "__main__":
     # All_mode("All",recommend=True)
     # All_mode("ideal",deg=40)
-    # for i in ("I","W","X","Y"):
-    #     unitPlot(i,"non")
+    for i in ("I","W","X","Y"):
+        unitPlot(i,"non")
     # for i in (30,40):
     #     for j in (30,45,50):
     #         All_mode("LP",deg=j, LP=i, flatisout=False, recommend=True)
@@ -322,6 +322,7 @@ if __name__ == "__main__":
         # All_mode("LPV",deg = i, LPV=90)
         # All_mode("LP",deg = i, LP=30, flatisout=False, recommend=True)
     # All_mode("LP",deg = 50, LP=40, recommend=True)
-    All_mode("prism")
+    # All_mode("LP",deg = 60, LP=60)
+    # All_mode("prism")
     # All_condition("W")
     pass
