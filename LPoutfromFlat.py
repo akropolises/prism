@@ -1,10 +1,24 @@
 from math import sin, asin, pi, degrees, radians
 import matplotlib.pyplot as plt
-from numpy import NaN
 
 n = 1.49 #PMMA
 
 def LP_outfrom_flat(incidentAngle_degree,LP=40):
+    """ 
+    LPタイプのプリズムシートにプリズム側から光を入射させ平面側から出射させた時の角度
+
+    Args:
+        incidentAngle_degree : int 
+            プリズムシート入射角(度数法)\n
+            プリズムシートに垂直を0°とし、左を負、右を正とする
+        LP : int
+            LPタイプのプリズムシートの角度\n
+            日本特殊光学樹脂製の存在する角度：[15,23,25,30,40]
+    
+    Returns:
+        float : プリズムシート出射角(度数法)
+            プリズムシートに垂直を0°とし、右へ向かうのを負、左へ向かうのを正とする。
+    """
     assert(-90<incidentAngle_degree<90)
     in0 = radians(incidentAngle_degree)
     LP = radians(LP)
@@ -35,7 +49,8 @@ def LP_outfrom_flat(incidentAngle_degree,LP=40):
     #         ret.append(degrees(out))
     #     except:
     #         pass
-    return ret
+    assert(len(ret)<2)
+    return ret[0] if ret else None
 
 def plot():
     LPs = [15,23,25,30,40]
@@ -43,14 +58,10 @@ def plot():
         x = []
         y = []
         for i in range(-89,90):
-            try:
-                out = LP_outfrom_flat(i,LP=LP)
-            except:
-                out = []
-            for j in out:
-                x.append(i)
-                y.append(j)
-        plt.scatter(x,y,label="LP=%d°"%LP,s = 5)
+            j = LP_outfrom_flat(i,LP=LP)
+            x.append(i)
+            y.append(j)
+        plt.scatter(x,y,label="LP%d"%LP,s = 5)
     plt.title("プリズムシートLP平面から出射", fontname="MS Gothic")
     plt.xlabel("プリズムシート入射角 [deg]", fontname="MS Gothic")
     plt.ylabel("プリズムシート出射角 [deg]", fontname="MS Gothic")
