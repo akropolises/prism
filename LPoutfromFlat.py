@@ -49,8 +49,7 @@ def LP_outfrom_flat(incidentAngle_degree,LP=40):
     #         ret.append(degrees(out))
     #     except:
     #         pass
-    assert(len(ret)<2)
-    return ret[0] if ret else None
+    return ret
 
 def plot():
     LPs = [15,23,25,30,40]

@@ -27,9 +27,12 @@ class LightType(Enum):
 class CoordinateTransformation:
 
     def theta_in0_to_theta_in1(theta_in0, item:Item, LP=40, LPV=90, flatisout = True):
+        if item == Item.LP:
+            return LP_into_flat(theta_in0,LP=LP) if flatisout else LP_outfrom_flat(theta_in0,LP=LP)
+        if item == Item.LPV:
+            return LPV_into_flat(theta_in0,LPV=LPV) if flatisout else LPV_outfrom_flat(theta_in0,LPV=LPV)
         d = {Item.non:theta_in0, Item.ideal:idealRefractionIn(theta_in0)}
-        d[Item.LP] = LP_into_flat(theta_in0,LP=LP) if flatisout else LP_outfrom_flat(theta_in0,LP=LP)
-        return d[item]
+        return [d[item]]
     
     def theta_in1_to_theta_AIP_in(theta_in1, item:Item, deg):
         if item == Item.prism:
@@ -56,48 +59,12 @@ class CoordinateTransformation:
             return phi_AIP_out
     
     def theta_out0_to_theta_out1(theta_out0, item:Item, LP=40, LPV=90, flatisout = True):
+        if item == Item.LP:
+            return LP_outfrom_flat(theta_out0,LP=LP) if flatisout else LP_into_flat(theta_out0,LP=LP)
+        if item == Item.LPV:
+            return LPV_outfrom_flat(theta_out0,LPV=LPV) if flatisout else LPV_into_flat(theta_out0,LPV=LPV)
         d = {Item.non:theta_out0, Item.ideal:idealRefractionOut(theta_out0)}
-        d[Item.LP] = LP_outfrom_flat(theta_out0,LP=LP) if flatisout else LP_into_flat(theta_out0,LP=LP)
-        return d[item]
-
-def LPVver(light_type:LightType, deg = 45, flatisout = True, LPV = 90, recommend = False):
-    assert(light_type in LightType)
-    theta = []
-    phi = []
-
-    for theta_in0 in range(-89,90):
-        theta_in1s = LPV_into_flat(theta_in0,LPV=LPV) if flatisout else LPV_outfrom_flat(theta_in0,LPV=LPV)
-        for theta_in1 in theta_in1s:
-            thetaASKAin = theta_in1 - deg
-            if not (-90 < thetaASKAin < 90):
-                continue
-            for phi_in in range(-89,90):
-                phiASKAin = phi_in
-                if recommend:
-                    thetaR = radians(thetaASKAin)
-                    phiR = radians(phiASKAin)
-                    psi = 90 - degrees(acos(1/(tan(thetaR)**2 + tan(phiR)**2 + 1)**(1/2)))
-                    if light_type == LightType.I:
-                        if not (25 <= psi <= 65):
-                            continue
-                    else:
-                        if 25 <= psi <= 65:
-                            continue
-                ASKAdict = {LightType.I:(-thetaASKAin, -phiASKAin), LightType.W:(thetaASKAin, phiASKAin), LightType.X:(phiASKAin, thetaASKAin), LightType.Y:(-phiASKAin, -thetaASKAin)}
-                thetaASKAout, phiASKAout = ASKAdict[light_type]
-                theta_out0 = thetaASKAout - deg
-                phi_out = phiASKAout
-                if not (-90 < theta_out0 < 90):
-                    if light_type != LightType.I:
-                        theta.append(theta_out0 + deg)
-                        phi.append(phi_out)
-                else:
-                    theta_out1s = LPV_outfrom_flat(theta_out0,LPV=LPV) if flatisout else LPV_into_flat(theta_out0,LPV=LPV)
-                    for theta_out1 in theta_out1s:
-                        theta.append(theta_out1 + deg)
-                        phi.append(phi_out)
-    return theta, phi
-
+        return [d[item]]
 
 def make_emission_angle_list(item:Item, light_type:LightType,  deg = 45, LP = 40, LPV = 90, recommend = False, flatisout = True):
     assert(item in Item)
@@ -105,48 +72,43 @@ def make_emission_angle_list(item:Item, light_type:LightType,  deg = 45, LP = 40
 
     if item == Item.prism:
         exit(print("execute right_angle_prism.py directly"))
-    elif item == Item.LPV:
-        print("exception")
-        return LPVver(light_type,deg=deg,flatisout=flatisout,LPV=LPV,recommend=recommend)
 
     theta = []
     phi = []
 
     for theta_in0 in range(-89,90):
-        theta_in1 = CoordinateTransformation.theta_in0_to_theta_in1(theta_in0,item,LP,LPV,flatisout)
-        if theta_in1 is None:
-            continue
-        theta_AIP_in = CoordinateTransformation.theta_in1_to_theta_AIP_in(theta_in1,item,deg)
-        if not (-90 < theta_AIP_in < 90):
-            continue
-        for phi_in in range(-89,90):
-            phi_AIP_in = CoordinateTransformation.phi_in_to_phi_AIP_in(phi_in,item)
-            if not (-90 < phi_AIP_in < 90):
+        theta_in1s = CoordinateTransformation.theta_in0_to_theta_in1(theta_in0,item,LP,LPV,flatisout)
+        for theta_in1 in theta_in1s:
+            theta_AIP_in = CoordinateTransformation.theta_in1_to_theta_AIP_in(theta_in1,item,deg)
+            if not (-90 < theta_AIP_in < 90):
                 continue
-            if recommend:
-                thetaR = radians(theta_AIP_in)
-                phiR = radians(phi_AIP_in)
-                psi = 90 - degrees(acos(1/(tan(thetaR)**2 + tan(phiR)**2 + 1)**(1/2)))
-                if light_type == LightType.I:
-                    if not (25 <= psi <= 65):
-                        continue
-                else:
-                    if 25 <= psi <= 65:
-                        continue
-            AIP_dict = {LightType.I:(-theta_AIP_in, -phi_AIP_in), LightType.W:(theta_AIP_in, phi_AIP_in), LightType.X:(phi_AIP_in, theta_AIP_in), LightType.Y:(-phi_AIP_in, -theta_AIP_in)}
-            theta_AIP_out, phi_AIP_out = AIP_dict[light_type]
-            theta_out0 = CoordinateTransformation.theta_AIP_out_to_theta_out0(theta_AIP_out, item, deg)
-            phi_out = CoordinateTransformation.phi_AIP_out_to_phi_out(phi_AIP_out, item)
-            if not (-90 < theta_out0 < 90):
-                if light_type != LightType.I:
-                    theta.append(theta_out0 + deg)
-                    phi.append(phi_out)
-            else:
-                theta_out1 = CoordinateTransformation.theta_out0_to_theta_out1(theta_out0,item,LP,LPV,flatisout)
-                if theta_out1 is None:
+            for phi_in in range(-89,90):
+                phi_AIP_in = CoordinateTransformation.phi_in_to_phi_AIP_in(phi_in,item)
+                if not (-90 < phi_AIP_in < 90):
                     continue
-                theta.append(theta_out1 + deg)
-                phi.append(phi_out)
+                if recommend:
+                    thetaR = radians(theta_AIP_in)
+                    phiR = radians(phi_AIP_in)
+                    psi = 90 - degrees(acos(1/(tan(thetaR)**2 + tan(phiR)**2 + 1)**(1/2)))
+                    if light_type == LightType.I:
+                        if not (25 <= psi <= 65):
+                            continue
+                    else:
+                        if 25 <= psi <= 65:
+                            continue
+                AIP_dict = {LightType.I:(-theta_AIP_in, -phi_AIP_in), LightType.W:(theta_AIP_in, phi_AIP_in), LightType.X:(phi_AIP_in, theta_AIP_in), LightType.Y:(-phi_AIP_in, -theta_AIP_in)}
+                theta_AIP_out, phi_AIP_out = AIP_dict[light_type]
+                theta_out0 = CoordinateTransformation.theta_AIP_out_to_theta_out0(theta_AIP_out, item, deg)
+                phi_out = CoordinateTransformation.phi_AIP_out_to_phi_out(phi_AIP_out, item)
+                if not (-90 < theta_out0 < 90):
+                    if light_type != LightType.I:
+                        theta.append(theta_out0 + deg)
+                        phi.append(phi_out)
+                else:
+                    theta_out1s = CoordinateTransformation.theta_out0_to_theta_out1(theta_out0,item,LP,LPV,flatisout)
+                    for theta_out1 in theta_out1s:
+                        theta.append(theta_out1 + deg)
+                        phi.append(phi_out)
     return theta, phi
             
 class Plot:
@@ -154,10 +116,12 @@ class Plot:
     def set_item_dict(self, LP=40, LPV=90, deg=45):
         self.item_dict = {Item.non:"屈折なし", Item.LP:"LP%d_%d"%(LP,deg), Item.LPV:"LPV%d_%d"%(LPV,deg), Item.prism:"直角プリズム", Item.ideal:"理想状態"}
 
-    def common(self,deg):
+    def common(self, Mdeg, mdeg = None):
+        if mdeg is None:
+            mdeg = Mdeg
         plt.xlabel("方位角 [deg]", fontname="MS Gothic")
         plt.ylabel("仰角 [deg]", fontname="MS Gothic")
-        plt.xlim(-90+deg,90+deg)
+        plt.xlim(-90+mdeg, 90+Mdeg)
         plt.ylim(-90,90)
         plt.legend(prop={"family":"MS Gothic"})
         plt.show()
@@ -174,7 +138,7 @@ class Plot:
         assert(item in Item)
         self.set_item_dict(LP,LPV,deg)
         
-        for light_type in (LightType.I,LightType.W,LightType.X,LightType.Y):
+        for light_type in LightType:
             x,y = make_emission_angle_list(item, light_type, deg, LP, LPV, recommend, flatisout)
             plt.scatter(x, y, label=light_type.value, s=5)
         plt.title(self.item_dict[item], fontname="MS Gothic")
@@ -201,13 +165,7 @@ class Plot:
                 x,y = make_emission_angle_list(item, light_type, deg, LP, LPV, recommend, flatisout)
                 plt.scatter(x, y, label=light_type.value, s=5)
             plt.title(self.item_dict[item], fontname="MS Gothic")
-            # self.common(deg)はxlimを変えるため使わない
-            plt.xlabel("方位角 [deg]", fontname="MS Gothic")
-            plt.ylabel("仰角 [deg]", fontname="MS Gothic")
-            plt.xlim(-90+mdeg,90+Mdeg)
-            plt.ylim(-90,90)
-            plt.legend(prop={"family":"MS Gothic"})
-            plt.show()
+            self.common(Mdeg,mdeg)
 
 if __name__ == "__main__":
     fig = Plot()
