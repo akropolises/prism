@@ -19,10 +19,10 @@ class Item(Enum):
     ideal = auto()
 
 class LightType(Enum):
-    I = auto()
-    W = auto()
-    X = auto()
-    Y = auto()
+    I = "結像光"
+    W = "両側透過光"
+    X = "X側透過光"
+    Y = "Y側透過光"
 
 class CoordinateTransformation:
 
@@ -151,11 +151,8 @@ def make_emission_angle_list(item:Item, light_type:LightType,  deg = 45, LP = 40
             
 class Plot:
 
-    def __init__(self):
-        self.light_type_dict = {LightType.W: "両側透過光", LightType.X:"X側透過光", LightType.Y:"Y側透過光", LightType.I:"結像光"}
-
     def set_item_dict(self, LP=40, LPV=90, deg=45):
-        self.item_dict = {Item.non:"屈折なし", Item.LP:"LP%d"%LP, Item.LPV:"LPV%d"%LPV, Item.prism:"直角プリズム", Item.ideal:"理想状態"}
+        self.item_dict = {Item.non:"屈折なし", Item.LP:"LP%d_%d"%(LP,deg), Item.LPV:"LPV%d_%d"%(LPV,deg), Item.prism:"直角プリズム", Item.ideal:"理想状態"}
 
     def common(self,deg):
         plt.xlabel("方位角 [deg]", fontname="MS Gothic")
@@ -169,7 +166,7 @@ class Plot:
         color_dict = {LightType.I:"tab:blue", LightType.W:"tab:orange", LightType.X:"tab:green", LightType.Y:"tab:red"}
         self.set_item_dict(LP,LPV,deg)
         x,y = make_emission_angle_list(item, light_type, deg, LP, LPV, recommend, flatisout)
-        plt.scatter(x, y, label=self.light_type_dict[light_type], s=5, c=color_dict[light_type])
+        plt.scatter(x, y, label=light_type.value, s=5, c=color_dict[light_type])
         plt.title(self.item_dict[item], fontname="MS Gothic")
         self.common(deg)
 
@@ -179,7 +176,7 @@ class Plot:
         
         for light_type in (LightType.I,LightType.W,LightType.X,LightType.Y):
             x,y = make_emission_angle_list(item, light_type, deg, LP, LPV, recommend, flatisout)
-            plt.scatter(x, y, label=self.light_type_dict[light_type], s=5)
+            plt.scatter(x, y, label=light_type.value, s=5)
         plt.title(self.item_dict[item], fontname="MS Gothic")
         self.common(deg)
 
@@ -187,22 +184,22 @@ class Plot:
         assert(light_type in LightType)
         self.set_item_dict(LP,LPV,deg)
 
-        for item in (Item.non, Item.LP, Item.LPV, Item.prism, Item.ideal):
+        for item in Item:
             x,y = make_emission_angle_list(item, light_type, deg, LP, LPV, recommend, flatisout)
             plt.scatter(x, y, label=self.item_dict[item], s=5)    
-        plt.title(self.light_type_dict[light_type], fontname="MS Gothic")
+        plt.title(light_type.value, fontname="MS Gothic")
         self.common(deg)
 
     def compare_deg(self, item:Item, degs = [45], flatisout = True, LP = 40, LPV = 90, recommend = False):
         assert(item in Item)
-        self.set_item_dict(LP,LPV,deg)
         Mdeg = max(degs)
         mdeg = min(degs)
         
         for deg in degs:
-            for light_type in (LightType.I,LightType.W,LightType.X,LightType.Y):
+            self.set_item_dict(LP,LPV,deg)
+            for light_type in LightType:
                 x,y = make_emission_angle_list(item, light_type, deg, LP, LPV, recommend, flatisout)
-                plt.scatter(x, y, label=self.light_type_dict[light_type], s=5)
+                plt.scatter(x, y, label=light_type.value, s=5)
             plt.title(self.item_dict[item], fontname="MS Gothic")
             # self.common(deg)はxlimを変えるため使わない
             plt.xlabel("方位角 [deg]", fontname="MS Gothic")
@@ -218,6 +215,6 @@ if __name__ == "__main__":
     # for light_type in LightType:
     #     fig.plot_unit(light_type,Item.non)
     # for i in (30,40):
-    #     fig.compare_deg(Item.LP,degs=[30,45,50],LP=i)
+        # fig.compare_deg(Item.LP,degs=[30,45,50],LP=i)
     # fig.plot_all_item(LightType.W)
     pass
