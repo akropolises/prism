@@ -4,3 +4,7 @@
 __pycache__/
 *.csv
 sin.py
+*.JPG
+*.pdf
+*.xlsx
+*.CR3

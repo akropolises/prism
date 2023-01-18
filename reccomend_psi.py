@@ -206,7 +206,7 @@ def plot_all(LP=40):
 if __name__ == "__main__":
     test()
     # plot(40)
-    plot_all()
+    plot_all(30)
 
     # incident, deg = (-10,20)
     # in1 = incident + deg

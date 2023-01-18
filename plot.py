@@ -179,10 +179,10 @@ class Plot:
 
 if __name__ == "__main__":
     fig = Plot()
-    fig.plot_all_light_type(Item.LP)
-    for light_type in LightType:
-        fig.plot_unit(light_type,Item.non)
-    for i in (30,40):
-        fig.compare_deg(Item.LP,degs=[30,45,50],LP=i)
+    fig.plot_all_light_type(Item.LP, LP=40, deg=23, flatisout=False)
+    # for light_type in LightType:
+    #     fig.plot_unit(light_type,Item.non)
+    # for i in (30,40):
+    #     fig.compare_deg(Item.LP,degs=[30,45,50],LP=i)
     # fig.plot_all_item(LightType.W)
     pass
