@@ -103,6 +103,52 @@ def normalization():
     # plt.legend(prop={"family":"MS Gothic"})
     # plt.show()
 
+def for_ronbun():
+    with open("result.csv", "r", encoding="utf-8-sig") as f:
+        data = f.readlines()
+    xLP40_0 = []
+    yLP40_0 = []
+    x_0 = []
+    y_0 = []
+    xLP40_45 = []
+    yLP40_45 = []
+    x_45 = []
+    y_45 = []
+    xLP30_45 = []
+    yLP30_45 = []
+    iPad = {}
+    
+    flag_to_x_dict = {1:xLP40_0, 2:x_0, 3:xLP40_45, 4:x_45, 5:xLP30_45}
+    flag_to_y_dict = {1:yLP40_0, 2:y_0, 3:yLP40_45, 4:y_45, 5:yLP30_45}
+    for i in data:
+        theta, mean, flag = map(float,i.split(","))
+        if flag == 6:
+            iPad[theta-90] = mean
+        else:
+            flag_to_x_dict[flag].append(theta-90)
+            flag_to_y_dict[flag].append(mean)
+    for i in range(20,40,5):
+        iPad[i] = iPad[-i]
+
+    label_dict = {1:"プリズムシートあり", 4:"プリズムシートなし"}
+    for flag in (1,4):
+        for i,j in enumerate(flag_to_x_dict[flag]):
+            try:
+                y = iPad[j]
+            except:
+                y = (iPad[j+2.5] + iPad[j-2.5])/2
+            flag_to_y_dict[flag][i] /= y
+            flag_to_y_dict[flag][i] *= 100
+        if flag == 4:
+            flag_to_x_dict[flag] = [i-45 for i in flag_to_x_dict[flag]]
+        plt.plot(flag_to_x_dict[flag], flag_to_y_dict[flag], label=label_dict[flag], marker = ".")
+    plt.xlabel("RT Plateに対する鑑賞方向 [deg]", fontname="MS Gothic", fontsize=14)
+    plt.ylabel("光利用効率 [%]", fontname="MS Gothic", fontsize=14)
+    plt.ylim(0,100)
+    plt.legend(prop={"family":"MS Gothic"})
+    plt.show()
+
 if __name__=="__main__":
     # row_result()
-    normalization()
+    # normalization()
+    for_ronbun()
