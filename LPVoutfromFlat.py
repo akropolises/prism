@@ -46,23 +46,24 @@ def plot():
             for j in out:
                 x.append(i)
                 y.append(j)
-        plt.scatter(x,y,label="LPV=%d°"%LPV,s = 5)
-    plt.title("プリズムシートLPV平面から出射", fontname="MS Gothic")
-    plt.xlabel("プリズムシート入射角 [deg]", fontname="MS Gothic")
-    plt.ylabel("プリズムシート出射角 [deg]", fontname="MS Gothic")
+        # plt.scatter(x,y,label="LPV=%d°"%LPV,s = 5)
+        plt.scatter(x,y,label="%d°"%LPV,s = 5)
+    # plt.title("プリズムシートLPV平面から出射", fontname="MS Gothic")
+    plt.xlabel("プリズムシート入射角 [deg]", fontname="MS Gothic", fontsize = 14)
+    plt.ylabel("プリズムシート出射角 [deg]", fontname="MS Gothic", fontsize = 14)
     plt.xlim(-90,90)
     plt.ylim(-90,90)
     
-    x = []
-    y = []
-    for i in range(-89,90):
-        try:
-            out = idealRefractionOut(i)
-        except:
-            out = NaN
-        x.append(i)
-        y.append(out)
-    plt.plot(x,y, label = "ideal")
+    # x = []
+    # y = []
+    # for i in range(-89,90):
+    #     try:
+    #         out = idealRefractionOut(i)
+    #     except:
+    #         out = NaN
+    #     x.append(i)
+    #     y.append(out)
+    # plt.plot(x,y, label = "ideal")
     plt.legend()
     plt.show()
 

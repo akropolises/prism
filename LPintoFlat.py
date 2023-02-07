@@ -58,12 +58,14 @@ def plot():
         y = []
         for i in range(-89,90):
             j = LP_into_flat(i,LP=LP)
-            x.append(i)
-            y.append(j)
-        plt.scatter(x,y,label="LP%d"%LP,s = 5)
-    plt.title("プリズムシートLP平面から入射", fontname="MS Gothic")
-    plt.xlabel("プリズムシート入射角 [deg]", fontname="MS Gothic")
-    plt.ylabel("プリズムシート出射角 [deg]", fontname="MS Gothic")
+            if j:
+                x.append(i)
+                y.append(j[0])
+        # plt.scatter(x,y,label="LP%d"%LP,s = 5)
+        plt.plot(x,y,label="%d°"%LP)
+    # plt.title("プリズムシートLP平面から入射", fontname="MS Gothic")
+    plt.xlabel("プリズムシート入射角 [deg]", fontname="MS Gothic", fontsize = 14)
+    plt.ylabel("プリズムシート出射角 [deg]", fontname="MS Gothic", fontsize = 14)
     plt.xlim(-90,90)
     plt.ylim(-90,90)
     plt.legend()
